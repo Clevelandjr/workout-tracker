@@ -18,12 +18,6 @@ app.use(express.static("public"));
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populate", { useNewUrlParser: true });
 
 
-
-
-
-
-
-
 // Start the server
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);
