@@ -1,52 +1,52 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const workoutSchema = new Schema({
-    name: {
-        type: String,
-        trim: true,
-        required: 'Enter a name for workout'
-    },
-    type: {
-        type: String,
-        trim: true,
-        required: 'Enter a type of workout'
-        // resistance or cardio
-    },
-    weight: {
-        type: Number,
-        trim: true,
-        required: 'Enter the weight for the workout in pounds'
-    },
-    sets: {
-        type: String,
-        trim: true,
-        required: 'Enter the sets for the workout'
-    },
-    reps: {
-        type: String,
-        trim: true,
-        required: 'Enter the reps for the workout'
-    },
-    duration: {
-        type: Number,
-        trim: true,
-        required: 'Enter the duration for the workout in minutes'
-    },
-    date: {
+    day: {
         type: Date,
-        default: Date.now
-    }
-}, {
-    toObject: {
-        virtuals: true
+        default: Date.now,
     },
-    toJSON: {
-        virtuals: true 
+    exercises: [{
+        type: {
+            type: String,
+            trim: true,
+            require: "Please enter type of exercise"
+        },
+        name: {
+            type: String,
+            trim: true,
+            require: "Please enter name of exercise"
+        },
+        duration: {
+            type: Number,
+            require: "Please enter duration of workout"
+        },
+        weight: {
+            type: Number,
+        },
+        reps: {
+            type: Number,
+        },
+        sets: {
+            type: Number,
+        }
+    }]
+},
+    {
+        toJSON: {
+            virtuals: true
+        }
+
     }
+);
+
+
+workoutSchema.virtual("totalDuration").get(function () {
+    return this.exercises.reduce((total, exercise) => {
+      return total + exercise.duration;
+    }, 0);
 });
 
-const Workout = mongoose.model('Workout', workoutSchema);
+const Workout = mongoose.model("Workout", workoutSchema);
 
 module.exports = Workout;
